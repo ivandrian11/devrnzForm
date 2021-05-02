@@ -1,5 +1,6 @@
 import 'package:devrnz_form/common/config.dart';
 import 'package:devrnz_form/common/size_config.dart';
+import 'package:devrnz_form/ui/home_page.dart';
 import 'package:devrnz_form/ui/register_page.dart';
 import 'package:devrnz_form/widgets/button_container.dart';
 import 'package:devrnz_form/widgets/entry_field.dart';
@@ -10,20 +11,49 @@ import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
   static String routeName = 'login';
+  final _username = TextEditingController();
+  final _password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    void showError(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          message,
+          style: TextStyle(
+            fontSize: (SizeConfig.safeBlockHorizontal * 4.4).roundToDouble(),
+          ),
+        ),
+      ));
+    }
+
     Widget _allTextField = Padding(
       padding: EdgeInsets.symmetric(
         horizontal: (SizeConfig.safeBlockHorizontal * 6.67).roundToDouble(),
       ),
       child: Column(
         children: [
-          EntryField('Email id'),
-          EntryField('Password', isPassword: true),
-          ButtonContainer(
-            title: 'Login',
-            titleColor: Colors.white,
-            decoration: formDecoration.copyWith(boxShadow: buttonShadow),
+          EntryField('Username', controller: _username),
+          EntryField('Password', isPassword: true, controller: _password),
+          InkWell(
+            onTap: () {
+              if (_username.text.isEmpty || _password.text.isEmpty) {
+                showError("Semua field harus diisi!");
+              } else {
+                if (_username.text == "admin" && _password.text == "admin") {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      HomePage.routeName, (route) => false);
+                } else {
+                  showError("Username atau password salah!");
+                }
+              }
+            },
+            child: ButtonContainer(
+              title: 'Login',
+              titleColor: Colors.white,
+              decoration: formDecoration.copyWith(boxShadow: buttonShadow),
+            ),
           ),
           SizedBox(
             height: (SizeConfig.safeBlockVertical * 2.4).roundToDouble(),

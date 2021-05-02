@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class EntryField extends StatelessWidget {
   final String title;
   final bool isPassword;
+  final TextEditingController controller;
 
-  EntryField(this.title, {this.isPassword = false});
+  EntryField(this.title, {this.isPassword = false, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,11 @@ class EntryField extends StatelessWidget {
         ),
         TextField(
           obscureText: isPassword,
-          style: TextStyle(color: Color(0xff474848)),
+          controller: controller,
+          style: TextStyle(
+            color: Color(0xff474848),
+            fontSize: (SizeConfig.safeBlockHorizontal * 4.4).roundToDouble(),
+          ),
           decoration: InputDecoration(
             border: InputBorder.none,
             fillColor: Color(0xffF3F3F4),
